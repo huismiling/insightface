@@ -500,9 +500,9 @@ def train_net(args):
     global_step = [0]
     save_step = [0]
     if len(args.lr_steps)==0:
-      lr_steps = [40000, 60000, 80000]
+      lr_steps = [4, 6, 8]
       if args.loss_type>=1 and args.loss_type<=7:
-        lr_steps = [100000, 140000, 160000]
+        lr_steps = [10, 14, 16]
       p = 512.0/args.batch_size
       for l in range(len(lr_steps)):
         lr_steps[l] = int(lr_steps[l]*p)
@@ -514,7 +514,7 @@ def train_net(args):
       global_step[0]+=1
       mbatch = global_step[0]
       for _lr in lr_steps:
-        if mbatch==args.beta_freeze+_lr:
+        if param.epoch==args.beta_freeze+_lr:
           opt.lr *= 0.1
           print('lr change to', opt.lr)
           break
