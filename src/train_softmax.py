@@ -437,6 +437,7 @@ def train_net(args):
         context       = ctx,
         symbol        = sym,
     )
+    #print("modle output_shapes", model.output_shapes)
     val_dataiter = None
 
     train_dataiter = FaceImageIter(
