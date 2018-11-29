@@ -467,7 +467,7 @@ def train_net(args):
     #initializer = mx.init.Xavier(rnd_type='gaussian', factor_type="out", magnitude=2) #resnet style
     _rescale = 1.0/args.ctx_num
     opt = optimizer.SGD(learning_rate=base_lr, momentum=base_mom, wd=base_wd, rescale_grad=_rescale)
-    som = 20
+    som = 40
     _cb = mx.callback.Speedometer(args.batch_size, som)
 
     ver_list = []
@@ -513,11 +513,6 @@ def train_net(args):
       #global global_step
       global_step[0]+=1
       mbatch = global_step[0]
-      for _lr in lr_steps:
-        if param.epoch==args.beta_freeze+_lr:
-          opt.lr *= 0.1
-          print('lr change to', opt.lr)
-          break
 
       _cb(param)
       if mbatch%1000==0:
@@ -570,7 +565,12 @@ def train_net(args):
       if args.max_steps>0 and mbatch>args.max_steps:
         sys.exit(0)
 
-    epoch_cb = None
+    def epoch_cb(param):
+      for _lr in lr_steps:
+        if param.epoch==args.beta_freeze+_lr:
+          opt.lr *= 0.1
+          print('lr change to', opt.lr)
+          break
     train_dataiter = mx.io.PrefetchingIter(train_dataiter)
 
     model.fit(train_dataiter,
