@@ -565,9 +565,9 @@ def train_net(args):
       if args.max_steps>0 and mbatch>args.max_steps:
         sys.exit(0)
 
-    def epoch_cb(param):
+    def epoch_cb(epoch, **kwargs):
       for _lr in lr_steps:
-        if param.epoch==args.beta_freeze+_lr:
+        if epoch==args.beta_freeze+_lr:
           opt.lr *= 0.1
           print('lr change to', opt.lr)
           break
