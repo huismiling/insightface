@@ -1,5 +1,5 @@
 
-pretrained='--pretrained /data/xgx/person128/base,67'
+pretrained='--pretrained ../models/person-m0-,2'
 pretrained=
 
 CUDA_VISIBLE_DEVICES='0,1,2,3' python -u train_softmax.py \
